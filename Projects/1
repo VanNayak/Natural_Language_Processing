@@ -1,0 +1,17 @@
+url = urlopen('https://en.wikipedia.org/wiki/Rajesh_Singh')
+from nltk.stem import PorterStemmer
+
+ls = PorterStemmer()
+
+url = urlopen('https://hi.wikipedia.org/wiki/%E0%A4%AC%E0%A4%BE%E0%A4%98')
+html = url.read()
+soup = BeautifulSoup(html, 'html.parser')
+data = soup.get_text()
+tokens = word_tokenize(data)
+swords = stopwords.words('english')
+tokens1 = [token for token in tokens if token.lower() not in swords]
+tokens2 = [token.lower() for token in tokens1 if token.isalnum()]
+tokens3 = [ls.stem(token) for token in tokens2 if len(token)> 1]
+freq = FreqDist(tokens3)
+freq.plot(20)
+freq.most_common(5)
